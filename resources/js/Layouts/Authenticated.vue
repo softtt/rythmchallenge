@@ -6,6 +6,7 @@ import BreezeDropdownLink from '@/Components/DropdownLink.vue';
 import BreezeNavLink from '@/Components/NavLink.vue';
 import BreezeResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import { Link } from '@inertiajs/inertia-vue3';
+import Metronome from "@/Components/Metronome";
 
 const showingNavigationDropdown = ref(false);
 </script>
@@ -104,6 +105,7 @@ const showingNavigationDropdown = ref(false);
             <!-- Page Content -->
             <main>
                 <slot />
+                <Metronome></Metronome>
             </main>
         </div>
     </div>
