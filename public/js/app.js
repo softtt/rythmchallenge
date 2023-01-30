@@ -23855,7 +23855,80 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  name: "Metronome"
+  name: "Metronome",
+  data: function data() {
+    return {
+      tempo: 140,
+      minTempo: 20,
+      maxTempo: 280,
+      beatsPerMeasure: 4,
+      minBeatsPerMeasure: 1,
+      maxBeatsPerMeasure: 8,
+      tempoDescription: "mid-tempo"
+    };
+  },
+  methods: {
+    updateTempo: function updateTempo(event) {
+      this.tempo = event.target.value;
+      this.updateTempoDescription();
+    },
+    decreaseTempo: function decreaseTempo() {
+      if (this.tempo > this.minTempo) {
+        this.tempo--;
+        this.updateTempoDescription();
+      }
+    },
+    increaseTempo: function increaseTempo() {
+      if (this.tempo < this.maxTempo) {
+        this.tempo++;
+        this.updateTempoDescription();
+      }
+    },
+    decreaseBeatsPerMeasure: function decreaseBeatsPerMeasure() {
+      if (this.beatsPerMeasure > this.minBeatsPerMeasure) {
+        this.beatsPerMeasure--;
+      }
+    },
+    increaseBeatsPerMeasure: function increaseBeatsPerMeasure() {
+      if (this.beatsPerMeasure < this.maxBeatsPerMeasure) {
+        this.beatsPerMeasure++;
+      }
+    },
+    updateTempoDescription: function updateTempoDescription() {
+      if (this.tempo > 220 && this.tempo <= 280) {
+        this.tempoDescription = 'hypertone';
+        return;
+      }
+      if (this.tempo <= 220 && this.tempo > 200) {
+        this.tempoDescription = 'super-fast';
+        return;
+      }
+      if (this.tempo <= 200 && this.tempo > 170) {
+        this.tempoDescription = 'fast';
+        return;
+      }
+      if (this.tempo <= 170 && this.tempo >= 140) {
+        this.tempoDescription = 'mid-tempo';
+        return;
+      }
+      if (this.tempo < 140 && this.tempo > 100) {
+        this.tempoDescription = 'groovie';
+        return;
+      }
+      if (this.tempo <= 100 && this.tempo > 60) {
+        this.tempoDescription = 'slowpoke';
+        return;
+      }
+      if (this.tempo <= 60 && this.tempo > 40) {
+        this.tempoDescription = 'drone, ambient';
+        return;
+      }
+      if (this.tempo <= 40 && this.tempo >= 20) {
+        this.tempoDescription = 'almost dead';
+        return;
+      }
+    }
+  }
 });
 
 /***/ }),
@@ -24798,10 +24871,76 @@ var _withScopeId = function _withScopeId(n) {
 var _hoisted_1 = {
   "class": "container"
 };
-var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"metronome\" data-v-20b6ccf7><div class=\"bpm-display\" data-v-20b6ccf7><span class=\"tempo\" data-v-20b6ccf7>140</span><span class=\"bpm\" data-v-20b6ccf7>BPM</span></div><div class=\"tempo-text\" data-v-20b6ccf7>Super Fast</div><div class=\"tempo-settings\" data-v-20b6ccf7><div class=\"adjust-tempo-btn decrease-tempo\" data-v-20b6ccf7>-</div><input type=\"range\" min=\"20\" max=\"280\" step=\"1\" class=\"tempo-slider\" data-v-20b6ccf7><div class=\"adjust-tempo-btn increase-tempo\" data-v-20b6ccf7>+</div></div><div class=\"start-stop\" data-v-20b6ccf7>START</div><div class=\"measures\" data-v-20b6ccf7><div class=\"subtract-beats stepper\" data-v-20b6ccf7>-</div><div class=\"measure-count\" data-v-20b6ccf7>4</div><div class=\"add-beats stepper\" data-v-20b6ccf7>+</div></div><span class=\"beats-per-measure\" data-v-20b6ccf7>Beats per mesure</span></div>", 1);
-var _hoisted_3 = [_hoisted_2];
+var _hoisted_2 = {
+  "class": "metronome"
+};
+var _hoisted_3 = {
+  "class": "bpm-display"
+};
+var _hoisted_4 = {
+  "class": "tempo"
+};
+var _hoisted_5 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+    "class": "bpm"
+  }, "BPM", -1 /* HOISTED */);
+});
+var _hoisted_6 = {
+  "class": "tempo-text"
+};
+var _hoisted_7 = {
+  "class": "tempo-settings"
+};
+var _hoisted_8 = ["value"];
+var _hoisted_9 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": "start-stop"
+  }, "START", -1 /* HOISTED */);
+});
+var _hoisted_10 = {
+  "class": "measures"
+};
+var _hoisted_11 = {
+  "class": "measure-count"
+};
+var _hoisted_12 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+    "class": "beats-per-measure"
+  }, "Beats per measure", -1 /* HOISTED */);
+});
+
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, _hoisted_3);
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.tempo), 1 /* TEXT */), _hoisted_5]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.tempoDescription), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": "adjust-tempo-btn decrease-tempo",
+    onClick: _cache[0] || (_cache[0] = function () {
+      return $options.decreaseTempo && $options.decreaseTempo.apply($options, arguments);
+    })
+  }, "-"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    type: "range",
+    min: "20",
+    max: "280",
+    step: "1",
+    "class": "tempo-slider",
+    value: $data.tempo,
+    onInput: _cache[1] || (_cache[1] = function () {
+      return $options.updateTempo && $options.updateTempo.apply($options, arguments);
+    })
+  }, null, 40 /* PROPS, HYDRATE_EVENTS */, _hoisted_8), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": "adjust-tempo-btn increase-tempo",
+    onClick: _cache[2] || (_cache[2] = function () {
+      return $options.increaseTempo && $options.increaseTempo.apply($options, arguments);
+    })
+  }, "+")]), _hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": "subtract-beats stepper",
+    onClick: _cache[3] || (_cache[3] = function () {
+      return $options.decreaseBeatsPerMeasure && $options.decreaseBeatsPerMeasure.apply($options, arguments);
+    })
+  }, "-"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.beatsPerMeasure), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": "add-beats stepper",
+    onClick: _cache[4] || (_cache[4] = function () {
+      return $options.increaseBeatsPerMeasure && $options.increaseBeatsPerMeasure.apply($options, arguments);
+    })
+  }, "+")]), _hoisted_12])]);
 }
 
 /***/ }),
@@ -25066,7 +25205,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Log Out ")];
     }),
     _: 1 /* STABLE */
-  }, 8 /* PROPS */, ["href"])])])], 2 /* CLASS */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Page Heading "), _ctx.$slots.header ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("header", _hoisted_21, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_22, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.renderSlot)(_ctx.$slots, "header")])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Page Content "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("main", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.renderSlot)(_ctx.$slots, "default"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["Metronome"])])])]);
+  }, 8 /* PROPS */, ["href"])])])], 2 /* CLASS */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Page Heading "), _ctx.$slots.header ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("header", _hoisted_21, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_22, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.renderSlot)(_ctx.$slots, "header")])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Page Content "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("main", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.renderSlot)(_ctx.$slots, "default"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["Metronome"], {
+    tempo: "140"
+  })])])]);
 }
 
 /***/ }),
@@ -25891,7 +26032,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.container[data-v-20b6ccf7] {\n        display: flex;\n        justify-content: center;\n        align-items: center;\n        height: 20vh;\n}\n.metronome[data-v-20b6ccf7] {\n        display: flex;\n        flex-direction: column;\n        width: 300px;\n        height: 250px;\n        justify-content: space-between;\n}\n.bpm-display[data-v-20b6ccf7] {\n        width: 100%;\n        text-align: center;\n        color: var(--nice-red);\n        font-weight: bold;\n}\n.bpm-display .tempo[data-v-20b6ccf7] {\n        font-size: 4em;\n}\n.tempo-text[data-v-20b6ccf7] {\n        font-size: .8em;\n        text-transform: uppercase;\n        text-align: center;\n}\n.tempo-settings[data-v-20b6ccf7] {\n        display: flex;\n        justify-content: space-between;\n}\n.tempo-settings .adjust-tempo-btn[data-v-20b6ccf7] {\n        width: 30px;\n        height: 30px;\n        font-size: 30px;\n        border-radius: 50%;\n        border: 1px solid var(--nice-white);\n        text-align: center;\n        cursor: pointer;\n}\n.tempo-settings .adjust-tempo-btn[data-v-20b6ccf7]:hover {\n        background: var(--nice-red);\n        color: var(--nice-white);\n}\n.tempo-settings .decrease-tempo[data-v-20b6ccf7] {\n        line-height: 27px;\n}\n.tempo-settings .increase-tempo[data-v-20b6ccf7] {\n        line-height: 27px;\n}\ninput[type=range][data-v-20b6ccf7] {\n        -webkit-appearance: none;\n        background-color: transparent;\n        width: 70%;\n}\ninput[type=range][data-v-20b6ccf7]::-webkit-slider-thumb {\n        -webkit-appearance: none;\n}\ninput[type=range][data-v-20b6ccf7]:focus {\n        outline: none;\n}\ninput[type=range][data-v-20b6ccf7]::-webkit-slider-thumb {\n        -webkit-appearance: none;\n        width: 16px;\n        height: 16px;\n        border-radius: 50%;\n        background: var(--nice-pinkie);\n        cursor: pointer;\n        margin-top: -8px;\n}\ninput[type=range][data-v-20b6ccf7]::-moz-range-thumb {\n        -webkit-appearance: none;\n        width: 16px;\n        height: 16px;\n        border-radius: 50%;\n        background: var(--nice-pinkie);\n        border: none;\n}\ninput[type=range][data-v-20b6ccf7]::-webkit-slider-runnable-track {\n        width: 100%;\n        height: 1px;\n        background: var(--nice-white);\n}\ninput[type=range][data-v-20b6ccf7]::-moz-range-track {\n        width: 100%;\n        height: 1px;\n        background: var(--nice-white);\n}\n.start-stop[data-v-20b6ccf7] {\n        width: 50px;\n        height: 50px;\n        font-size: 0.7em;\n        text-align: center;\n        background-color: var(--nice-red);\n        border-radius: 50px;\n        color: white;\n        line-height: 50px;\n        margin: 0 auto;\n        cursor: pointer;\n}\n.start-stop[data-v-20b6ccf7]:hover {\n        background: var(--nice-pinkie);\n}\n.measures[data-v-20b6ccf7] {\n        /*display: none;*/\n        display: flex;\n        justify-content: center;\n}\n.measures .stepper[data-v-20b6ccf7] {\n        width: 20px;\n        height: 20px;\n        border-radius: 50%;\n        border: none;\n        text-align: center;\n        margin: 0 5px;\n        cursor: pointer;\n}\n.measures .stepper[data-v-20b6ccf7]:hover {\n        background: var(--nice-pinkie);\n        color: white;\n}\n.measures .add-beats[data-v-20b6ccf7] {\n        line-height: 18px;\n}\n.measures .subtract-beats[data-v-20b6ccf7] {\n        line-height: 20px;\n}\n.beats-per-measure[data-v-20b6ccf7] {\n        text-align: center;\n        font-size: .5em;\n        text-transform: uppercase;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.container[data-v-20b6ccf7] {\n        display: flex;\n        justify-content: center;\n        align-items: center;\n        height: 20vh;\n}\n.metronome[data-v-20b6ccf7] {\n        display: flex;\n        flex-direction: column;\n        width: 300px;\n        height: 250px;\n        justify-content: space-between;\n        -webkit-user-select: none; /* Safari */\n        -moz-user-select: none; /* Firefox */ /* Internet Explorer/Edge */\n        user-select: none; /* Standard */\n}\n.bpm-display[data-v-20b6ccf7] {\n        width: 100%;\n        text-align: center;\n        color: var(--nice-red);\n        font-weight: bold;\n}\n.bpm-display .tempo[data-v-20b6ccf7] {\n        font-size: 4em;\n}\n.tempo-text[data-v-20b6ccf7] {\n        font-size: .8em;\n        text-transform: uppercase;\n        text-align: center;\n}\n.tempo-settings[data-v-20b6ccf7] {\n        display: flex;\n        justify-content: space-between;\n}\n.tempo-settings .adjust-tempo-btn[data-v-20b6ccf7] {\n        width: 30px;\n        height: 30px;\n        font-size: 30px;\n        border-radius: 50%;\n        border: 1px solid var(--nice-white);\n        text-align: center;\n        cursor: pointer;\n}\n.tempo-settings .adjust-tempo-btn[data-v-20b6ccf7]:hover {\n        background: var(--nice-red);\n        color: var(--nice-white);\n}\n.tempo-settings .decrease-tempo[data-v-20b6ccf7] {\n        line-height: 27px;\n}\n.tempo-settings .increase-tempo[data-v-20b6ccf7] {\n        line-height: 27px;\n}\ninput[type=range][data-v-20b6ccf7] {\n        -webkit-appearance: none;\n        background-color: transparent;\n        width: 70%;\n}\ninput[type=range][data-v-20b6ccf7]::-webkit-slider-thumb {\n        -webkit-appearance: none;\n}\ninput[type=range][data-v-20b6ccf7]:focus {\n        outline: none;\n}\ninput[type=range][data-v-20b6ccf7]::-webkit-slider-thumb {\n        -webkit-appearance: none;\n        width: 16px;\n        height: 16px;\n        border-radius: 50%;\n        background: var(--nice-pinkie);\n        cursor: pointer;\n        margin-top: -8px;\n}\ninput[type=range][data-v-20b6ccf7]::-moz-range-thumb {\n        -webkit-appearance: none;\n        width: 16px;\n        height: 16px;\n        border-radius: 50%;\n        background: var(--nice-pinkie);\n        border: none;\n}\ninput[type=range][data-v-20b6ccf7]::-webkit-slider-runnable-track {\n        width: 100%;\n        height: 1px;\n        background: var(--nice-white);\n}\ninput[type=range][data-v-20b6ccf7]::-moz-range-track {\n        width: 100%;\n        height: 1px;\n        background: var(--nice-white);\n}\n.start-stop[data-v-20b6ccf7] {\n        width: 50px;\n        height: 50px;\n        font-size: 0.7em;\n        text-align: center;\n        background-color: var(--nice-red);\n        border-radius: 50px;\n        color: white;\n        line-height: 50px;\n        margin: 0 auto;\n        cursor: pointer;\n}\n.start-stop[data-v-20b6ccf7]:hover {\n        background: var(--nice-pinkie);\n}\n.measures[data-v-20b6ccf7] {\n        /*display: none;*/\n        display: flex;\n        justify-content: center;\n}\n.measures .stepper[data-v-20b6ccf7] {\n        width: 20px;\n        height: 20px;\n        border-radius: 50%;\n        border: none;\n        text-align: center;\n        margin: 0 5px;\n        cursor: pointer;\n}\n.measures .stepper[data-v-20b6ccf7]:hover {\n        background: var(--nice-pinkie);\n        color: white;\n}\n.measures .add-beats[data-v-20b6ccf7] {\n        line-height: 18px;\n}\n.measures .subtract-beats[data-v-20b6ccf7] {\n        line-height: 20px;\n}\n.beats-per-measure[data-v-20b6ccf7] {\n        text-align: center;\n        font-size: .5em;\n        text-transform: uppercase;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

@@ -104,8 +104,9 @@ const showingNavigationDropdown = ref(false);
 
             <!-- Page Content -->
             <main>
-                <slot />
-                <Metronome></Metronome>
+                <slot>
+                </slot>
+                <Metronome tempo="140"></Metronome>
             </main>
         </div>
     </div>
