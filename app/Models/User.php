@@ -37,4 +37,12 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Get the challenges for the blog post.
+     */
+    public function challenges()
+    {
+        return $this->hasMany(Challenge::class);
+    }
 }

@@ -23854,34 +23854,64 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _timer_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/timer.js */ "./resources/js/timer.js");
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Metronome",
+  components: {
+    Timer: _timer_js__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
   data: function data() {
     return {
+      timer: 0,
       tempo: 140,
       minTempo: 20,
       maxTempo: 280,
       beatsPerMeasure: 4,
       minBeatsPerMeasure: 1,
       maxBeatsPerMeasure: 8,
-      tempoDescription: "mid-tempo"
+      tempoDescription: "mid-tempo",
+      startStopTimerText: 'Start',
+      clickSoundInitialText: 'Click Type',
+      clickSoundType: 'Click Clack',
+      showOptions: false,
+      options: [{
+        value: '1',
+        text: 'Click Clack'
+      }, {
+        value: '2',
+        text: 'Bleep Bloop'
+      }, {
+        value: '3',
+        text: 'Tick Tack'
+      }, {
+        value: '4',
+        text: 'Pif Puff'
+      }],
+      clickCounter: 1,
+      started: false,
+      clickSound: false,
+      clackSound: false
     };
   },
   methods: {
     updateTempo: function updateTempo(event) {
       this.tempo = event.target.value;
       this.updateTempoDescription();
+      this.setClickInterval();
     },
     decreaseTempo: function decreaseTempo() {
       if (this.tempo > this.minTempo) {
         this.tempo--;
         this.updateTempoDescription();
+        this.setClickInterval();
       }
     },
     increaseTempo: function increaseTempo() {
       if (this.tempo < this.maxTempo) {
         this.tempo++;
         this.updateTempoDescription();
+        this.setClickInterval();
       }
     },
     decreaseBeatsPerMeasure: function decreaseBeatsPerMeasure() {
@@ -23893,6 +23923,10 @@ __webpack_require__.r(__webpack_exports__);
       if (this.beatsPerMeasure < this.maxBeatsPerMeasure) {
         this.beatsPerMeasure++;
       }
+    },
+    startOrStop: function startOrStop() {
+      this.started ? this.stopMetronome() : this.startMetronome();
+      this.startStopTimerText = this.startStopTimerText === 'Start' ? 'Stop' : 'Start';
     },
     updateTempoDescription: function updateTempoDescription() {
       if (this.tempo > 220 && this.tempo <= 280) {
@@ -23925,9 +23959,42 @@ __webpack_require__.r(__webpack_exports__);
       }
       if (this.tempo <= 40 && this.tempo >= 20) {
         this.tempoDescription = 'almost dead';
-        return;
       }
+    },
+    playClick: function playClick() {
+      var sound = null;
+      if (this.clickCounter === this.beatsPerMeasure) {
+        sound = this.clackSound;
+        this.clickCounter = 1;
+      } else {
+        sound = this.clickSound;
+        this.clickCounter++;
+      }
+      sound.play();
+    },
+    getClickInterval: function getClickInterval() {
+      return 60000 / this.tempo;
+    },
+    setClickInterval: function setClickInterval() {
+      this.timer.setTimeInterval(this.getClickInterval());
+    },
+    startMetronome: function startMetronome() {
+      this.setClickInterval();
+      this.started = true;
+      this.timer.start();
+    },
+    stopMetronome: function stopMetronome() {
+      this.clickCounter = 1;
+      this.started = false;
+      this.timer.stop();
     }
+  },
+  mounted: function mounted() {
+    this.timer = new _timer_js__WEBPACK_IMPORTED_MODULE_0__["default"](this.playClick, this.getClickInterval(), {
+      immediate: true
+    });
+    this.clackSound = new Audio('/audio/metronome/click2.mp3');
+    this.clickSound = new Audio('/audio/metronome/click1.mp3');
   }
 });
 
@@ -24892,18 +24959,21 @@ var _hoisted_7 = {
   "class": "tempo-settings"
 };
 var _hoisted_8 = ["value"];
-var _hoisted_9 = /*#__PURE__*/_withScopeId(function () {
-  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "start-stop"
-  }, "START", -1 /* HOISTED */);
-});
+var _hoisted_9 = {
+  "class": "start-buttons-container"
+};
 var _hoisted_10 = {
+  key: 0,
+  "class": "options-container"
+};
+var _hoisted_11 = ["onClick"];
+var _hoisted_12 = {
   "class": "measures"
 };
-var _hoisted_11 = {
+var _hoisted_13 = {
   "class": "measure-count"
 };
-var _hoisted_12 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_14 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
     "class": "beats-per-measure"
   }, "Beats per measure", -1 /* HOISTED */);
@@ -24930,17 +25000,35 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onClick: _cache[2] || (_cache[2] = function () {
       return $options.increaseTempo && $options.increaseTempo.apply($options, arguments);
     })
-  }, "+")]), _hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "subtract-beats stepper",
+  }, "+")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": "start-stop",
     onClick: _cache[3] || (_cache[3] = function () {
+      return $options.startOrStop && $options.startOrStop.apply($options, arguments);
+    })
+  }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.startStopTimerText), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    "class": "select-click-sound",
+    onClick: _cache[4] || (_cache[4] = function ($event) {
+      return $data.showOptions = !$data.showOptions;
+    })
+  }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.clickSoundType), 1 /* TEXT */), $data.showOptions ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_10, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.options, function (option) {
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
+      key: option.value,
+      "class": "option",
+      onClick: function onClick($event) {
+        return $data.clickSoundType = option.text, $data.showOptions = false;
+      }
+    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(option.text), 9 /* TEXT, PROPS */, _hoisted_11);
+  }), 128 /* KEYED_FRAGMENT */))])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": "subtract-beats stepper",
+    onClick: _cache[5] || (_cache[5] = function () {
       return $options.decreaseBeatsPerMeasure && $options.decreaseBeatsPerMeasure.apply($options, arguments);
     })
-  }, "-"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.beatsPerMeasure), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  }, "-"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.beatsPerMeasure), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
     "class": "add-beats stepper",
-    onClick: _cache[4] || (_cache[4] = function () {
+    onClick: _cache[6] || (_cache[6] = function () {
       return $options.increaseBeatsPerMeasure && $options.increaseBeatsPerMeasure.apply($options, arguments);
     })
-  }, "+")]), _hoisted_12])]);
+  }, "+")]), _hoisted_14])]);
 }
 
 /***/ }),
@@ -25119,9 +25207,6 @@ var _hoisted_21 = {
   key: 0,
   "class": "bg-white shadow"
 };
-var _hoisted_22 = {
-  "class": "max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8"
-};
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("nav", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Primary Navigation Menu "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Logo "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["Link"], {
     href: _ctx.route('dashboard')
@@ -25205,8 +25290,10 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Log Out ")];
     }),
     _: 1 /* STABLE */
-  }, 8 /* PROPS */, ["href"])])])], 2 /* CLASS */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Page Heading "), _ctx.$slots.header ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("header", _hoisted_21, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_22, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.renderSlot)(_ctx.$slots, "header")])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Page Content "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("main", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.renderSlot)(_ctx.$slots, "default"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["Metronome"], {
-    tempo: "140"
+  }, 8 /* PROPS */, ["href"])])])], 2 /* CLASS */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Page Heading "), _ctx.$slots.header ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("header", _hoisted_21)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Page Content "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("main", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.renderSlot)(_ctx.$slots, "metronome", {}, function () {
+    return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["Metronome"], {
+      tempo: "140"
+    })];
   })])])]);
 }
 
@@ -25931,6 +26018,64 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 /***/ }),
 
+/***/ "./resources/js/timer.js":
+/*!*******************************!*\
+  !*** ./resources/js/timer.js ***!
+  \*******************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+// Add accurate timer constructor function
+
+function Timer(callback, timeInterval, options) {
+  var _this = this;
+  this.timeInterval = timeInterval;
+  this.setTimeInterval = function (timeInterval) {
+    _this.timeInterval = timeInterval;
+  };
+
+  // Add method to start timer
+  this.start = function () {
+    // Set the expected time. The moment in time we start the timer plus whatever the time interval is.
+    _this.expected = Date.now() + _this.timeInterval;
+    // Start the timeout and save the id in a property, so we can cancel it later
+    _this.theTimeout = null;
+    if (options.immediate) {
+      callback();
+    }
+    _this.timeout = setTimeout(_this.round, _this.timeInterval);
+  };
+  // Add method to stop timer
+  this.stop = function () {
+    clearTimeout(_this.timeout);
+  };
+  // Round method that takes care of running the callback and adjusting the time
+  this.round = function () {
+    //console.log('timeout', this.timeout);
+    // The drift will be the current moment in time for this round minus the expected time..
+    var drift = Date.now() - _this.expected;
+    // Run error callback if drift is greater than time interval, and if the callback is provided
+    if (drift > _this.timeInterval) {
+      // If error callback is provided
+      if (options.errorCallback) {
+        options.errorCallback();
+      }
+    }
+    callback();
+    // Increment expected time by time interval for every round after running the callback function.
+    _this.expected += _this.timeInterval;
+    // Run timeout again and set the timeInterval of the next iteration to the original time interval minus the drift.
+    _this.timeout = setTimeout(_this.round, _this.timeInterval - drift);
+  };
+}
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Timer);
+
+/***/ }),
+
 /***/ "./node_modules/call-bind/callBound.js":
 /*!*********************************************!*\
   !*** ./node_modules/call-bind/callBound.js ***!
@@ -26032,7 +26177,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.container[data-v-20b6ccf7] {\n        display: flex;\n        justify-content: center;\n        align-items: center;\n        height: 20vh;\n}\n.metronome[data-v-20b6ccf7] {\n        display: flex;\n        flex-direction: column;\n        width: 300px;\n        height: 250px;\n        justify-content: space-between;\n        -webkit-user-select: none; /* Safari */\n        -moz-user-select: none; /* Firefox */ /* Internet Explorer/Edge */\n        user-select: none; /* Standard */\n}\n.bpm-display[data-v-20b6ccf7] {\n        width: 100%;\n        text-align: center;\n        color: var(--nice-red);\n        font-weight: bold;\n}\n.bpm-display .tempo[data-v-20b6ccf7] {\n        font-size: 4em;\n}\n.tempo-text[data-v-20b6ccf7] {\n        font-size: .8em;\n        text-transform: uppercase;\n        text-align: center;\n}\n.tempo-settings[data-v-20b6ccf7] {\n        display: flex;\n        justify-content: space-between;\n}\n.tempo-settings .adjust-tempo-btn[data-v-20b6ccf7] {\n        width: 30px;\n        height: 30px;\n        font-size: 30px;\n        border-radius: 50%;\n        border: 1px solid var(--nice-white);\n        text-align: center;\n        cursor: pointer;\n}\n.tempo-settings .adjust-tempo-btn[data-v-20b6ccf7]:hover {\n        background: var(--nice-red);\n        color: var(--nice-white);\n}\n.tempo-settings .decrease-tempo[data-v-20b6ccf7] {\n        line-height: 27px;\n}\n.tempo-settings .increase-tempo[data-v-20b6ccf7] {\n        line-height: 27px;\n}\ninput[type=range][data-v-20b6ccf7] {\n        -webkit-appearance: none;\n        background-color: transparent;\n        width: 70%;\n}\ninput[type=range][data-v-20b6ccf7]::-webkit-slider-thumb {\n        -webkit-appearance: none;\n}\ninput[type=range][data-v-20b6ccf7]:focus {\n        outline: none;\n}\ninput[type=range][data-v-20b6ccf7]::-webkit-slider-thumb {\n        -webkit-appearance: none;\n        width: 16px;\n        height: 16px;\n        border-radius: 50%;\n        background: var(--nice-pinkie);\n        cursor: pointer;\n        margin-top: -8px;\n}\ninput[type=range][data-v-20b6ccf7]::-moz-range-thumb {\n        -webkit-appearance: none;\n        width: 16px;\n        height: 16px;\n        border-radius: 50%;\n        background: var(--nice-pinkie);\n        border: none;\n}\ninput[type=range][data-v-20b6ccf7]::-webkit-slider-runnable-track {\n        width: 100%;\n        height: 1px;\n        background: var(--nice-white);\n}\ninput[type=range][data-v-20b6ccf7]::-moz-range-track {\n        width: 100%;\n        height: 1px;\n        background: var(--nice-white);\n}\n.start-stop[data-v-20b6ccf7] {\n        width: 50px;\n        height: 50px;\n        font-size: 0.7em;\n        text-align: center;\n        background-color: var(--nice-red);\n        border-radius: 50px;\n        color: white;\n        line-height: 50px;\n        margin: 0 auto;\n        cursor: pointer;\n}\n.start-stop[data-v-20b6ccf7]:hover {\n        background: var(--nice-pinkie);\n}\n.measures[data-v-20b6ccf7] {\n        /*display: none;*/\n        display: flex;\n        justify-content: center;\n}\n.measures .stepper[data-v-20b6ccf7] {\n        width: 20px;\n        height: 20px;\n        border-radius: 50%;\n        border: none;\n        text-align: center;\n        margin: 0 5px;\n        cursor: pointer;\n}\n.measures .stepper[data-v-20b6ccf7]:hover {\n        background: var(--nice-pinkie);\n        color: white;\n}\n.measures .add-beats[data-v-20b6ccf7] {\n        line-height: 18px;\n}\n.measures .subtract-beats[data-v-20b6ccf7] {\n        line-height: 20px;\n}\n.beats-per-measure[data-v-20b6ccf7] {\n        text-align: center;\n        font-size: .5em;\n        text-transform: uppercase;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.container[data-v-20b6ccf7] {\n        display: flex;\n        justify-content: center;\n        align-items: center;\n        /*height: 100vh;*/\n}\n.metronome[data-v-20b6ccf7] {\n        display: flex;\n        flex-direction: column;\n        width: 300px;\n        height: 250px;\n        justify-content: space-between;\n        -webkit-user-select: none; /* Safari */\n        -moz-user-select: none; /* Firefox */ /* Internet Explorer/Edge */\n        user-select: none; /* Standard */\n}\n.bpm-display[data-v-20b6ccf7] {\n        width: 100%;\n        text-align: center;\n        color: var(--nice-red);\n        font-weight: bold;\n}\n.bpm-display .tempo[data-v-20b6ccf7] {\n        font-size: 4em;\n}\n.tempo-text[data-v-20b6ccf7] {\n        font-size: .8em;\n        text-transform: uppercase;\n        text-align: center;\n}\n.tempo-settings[data-v-20b6ccf7] {\n        display: flex;\n        justify-content: space-between;\n}\n.tempo-settings .adjust-tempo-btn[data-v-20b6ccf7] {\n        width: 30px;\n        height: 30px;\n        font-size: 30px;\n        border-radius: 50%;\n        border: 1px solid var(--nice-white);\n        text-align: center;\n        cursor: pointer;\n}\n.tempo-settings .adjust-tempo-btn[data-v-20b6ccf7]:hover {\n        background: var(--nice-red);\n        color: var(--nice-white);\n}\n.tempo-settings .decrease-tempo[data-v-20b6ccf7] {\n        line-height: 27px;\n}\n.tempo-settings .increase-tempo[data-v-20b6ccf7] {\n        line-height: 27px;\n}\ninput[type=range][data-v-20b6ccf7] {\n        -webkit-appearance: none;\n        background-color: transparent;\n        width: 70%;\n}\ninput[type=range][data-v-20b6ccf7]::-webkit-slider-thumb {\n        -webkit-appearance: none;\n}\ninput[type=range][data-v-20b6ccf7]:focus {\n        outline: none;\n}\ninput[type=range][data-v-20b6ccf7]::-webkit-slider-thumb {\n        -webkit-appearance: none;\n        width: 16px;\n        height: 16px;\n        border-radius: 50%;\n        background: var(--nice-pinkie);\n        cursor: pointer;\n        margin-top: -8px;\n}\ninput[type=range][data-v-20b6ccf7]::-moz-range-thumb {\n        -webkit-appearance: none;\n        width: 16px;\n        height: 16px;\n        border-radius: 50%;\n        background: var(--nice-pinkie);\n        border: none;\n}\ninput[type=range][data-v-20b6ccf7]::-webkit-slider-runnable-track {\n        width: 100%;\n        height: 1px;\n        background: var(--nice-white);\n}\ninput[type=range][data-v-20b6ccf7]::-moz-range-track {\n        width: 100%;\n        height: 1px;\n        background: var(--nice-white);\n}\n.measures[data-v-20b6ccf7] {\n        display: flex;\n        justify-content: center;\n}\n.measures .stepper[data-v-20b6ccf7] {\n        width: 20px;\n        height: 20px;\n        border-radius: 50%;\n        border: none;\n        text-align: center;\n        margin: 0 5px;\n        cursor: pointer;\n}\n.measures .stepper[data-v-20b6ccf7]:hover {\n        background: var(--nice-pinkie);\n        color: white;\n}\n.measures .add-beats[data-v-20b6ccf7] {\n        line-height: 18px;\n}\n.measures .subtract-beats[data-v-20b6ccf7] {\n        line-height: 20px;\n}\n.beats-per-measure[data-v-20b6ccf7] {\n        text-align: center;\n        font-size: .5em;\n        text-transform: uppercase;\n}\n.start-buttons-container[data-v-20b6ccf7] {\n        display: flex;\n        justify-content: center;\n}\n.start-stop[data-v-20b6ccf7] {\n        width: 100px;\n        height: 50px;\n        font-size: 0.7em;\n        text-align: center;\n        background-color: var(--nice-red);\n        border-radius: 50px;\n        color: white;\n        line-height: 50px;\n        margin: 0 auto;\n        cursor: pointer;\n        text-transform: uppercase;\n}\n.select-click-sound[data-v-20b6ccf7] {\n        width: 100px;\n        height: 50px;\n        font-size: 0.7em;\n        text-align: center;\n        background-color: var(--nice-white);\n        border-radius: 50px;\n        color: var(--light-grey);\n        line-height: 50px;\n        margin: 0 auto;\n        cursor: pointer;\n        text-transform: uppercase;\n}\n.select-click-sound[data-v-20b6ccf7]:hover {\n        background: var(--nice-pinkie);\n        color: white;\n}\n.start-stop[data-v-20b6ccf7]:hover {\n        background: var(--nice-pinkie);\n}\n.options-container[data-v-20b6ccf7] {\n        border: none;\n        width: 50px;\n        display: flex;\n        flex-direction:row;\n        z-index: 1;\n}\n.option[data-v-20b6ccf7] {\n        font-size: 0.7em;\n        padding: 5px;\n        text-align: center;\n        width: 100%;\n        border-radius: 50px;\n        text-transform: uppercase;\n        min-width: 50px;\n        cursor: pointer;\n        display: flex;\n        align-items: center;\n        justify-content: center;\n}\n.option[data-v-20b6ccf7]:hover {\n        background: var(--nice-pinkie);\n        color: white;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
